@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question 1:</title>
+  <link rel="stylesheet" type="text/css" href="qn11.css">
+</head>
+<style>
+  *{
+    font-size: small;
+    background-color:white;
+    font-family: serif;
+  }
+</style>
+<body>
+  <form>
+    <input type="text" id="entryInput" placeholder="Enter entry"><br><br>
+    <button type="button" onclick="addEntry()">Add Entry</button>
+    <button type="button" onclick="summary()">Summary</button>
+  </form>
+
+  <div id="entries">
+    <h2>Entries:</h2>
+    <ul id="entryList"></ul>
+  </div><br><br>
+
+  <div id="summary">
+    <h2>Summary:</h2>
+    <p id="entryCount"></p>
+    <ul id="sortedEntries"></ul>
+  </div>
+
+  <script>
+    let entryData = [];
+
+    function addEntry() {
+      const entryInput = document.getElementById('entryInput');
+      const entryValue = entryInput.value.trim();
+
+      if (entryValue === '') {
+        alert('Invalid entry');
+        return;
+      }
+
+      const entryComponents = entryValue.split(',');
+
+      if (entryComponents.length !== 3) {
+        alert('Invalid entry');
+        return;
+      }
+
+      const directoryId = entryComponents[0].trim();
+      const description = entryComponents[1].trim();
+      const duration = entryComponents[2].trim();
+
+      entryData.push({
+        directoryId,
+        description,
+        duration
+      });
+
+      const entryList = document.getElementById('entryList');
+      const entryItem = document.createElement('li');
+      entryItem.textContent = `${directoryId} ${description} ${duration}`;
+      entryList.appendChild(entryItem);
+
+      entryInput.value = '';
+    }
+
+    function summary() {
+      const entryCount = document.getElementById('entryCount');
+      entryCount.textContent = `Number of Entries: ${entryData.length}`;
+
+      const sortedEntries = entryData.slice().sort((a, b) => a.duration - b.duration);
+
+      const sortedEntryList = document.getElementById('sortedEntries');
+      sortedEntryList.innerHTML = '';
+
+      for (const entry of sortedEntries) {
+        const entryItem = document.createElement('li');
+        entryItem.textContent = `${entry.directoryId} ${entry.description} ${entry.duration}`;
+        sortedEntryList.appendChild(entryItem);
+      }
+    }
+  </script>
+</body>
+</html>
